@@ -1,0 +1,51 @@
+spring:
+  application:
+    name: AICodeGenerate
+  # mysql
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/marcus_ai_code
+    username: xxx
+    password: xxxxxx
+  profiles:
+    active: local
+
+# AI
+langchain4j:
+  open-ai:
+    chat-model:
+      base-url: https://api.deepseek.com
+      api-key: <Your API Key>
+      model-name: deepseek-chat
+      log-requests: true
+      log-responses: true
+      max-tokens: 8192
+      strict-json-schema: true
+      response-format: json_object
+    # 流式输出
+    streaming-chat-model:
+      base-url: https://api.deepseek.com
+      api-key: <Your API Key>
+      model-name: deepseek-chat
+      max-tokens: 8192
+      log-requests: true
+      log-responses: true
+
+
+server:
+  port: 8123
+  servlet:
+    context-path: /api
+
+
+# springdoc-openapi
+springdoc:
+  group-configs:
+    - group: 'default'
+      packages-to-scan: com.marcuschu.aicodegenerate.controller
+# knife4j
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn
+

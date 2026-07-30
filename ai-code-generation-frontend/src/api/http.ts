@@ -11,6 +11,9 @@ interface RequestOptions extends Omit<RequestInit, 'body'> {
 const configuredBaseUrl = import.meta.env.VITE_API_BASE_URL || '/api'
 const apiBaseUrl = configuredBaseUrl.replace(/\/$/, '')
 
+export const buildApiUrl = (path: string) =>
+  `${apiBaseUrl}${path.startsWith('/') ? path : `/${path}`}`
+
 export class ApiError extends Error {
   code?: number
   status?: number
@@ -25,7 +28,7 @@ export class ApiError extends Error {
 
 export const request = async <T>(path: string, options: RequestOptions = {}): Promise<T> => {
   const hasBody = options.body !== undefined
-  const response = await fetch(`${apiBaseUrl}${path}`, {
+  const response = await fetch(buildApiUrl(path), {
     ...options,
     body: hasBody ? JSON.stringify(options.body) : undefined,
     credentials: 'include',

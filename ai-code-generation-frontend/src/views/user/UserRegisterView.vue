@@ -6,7 +6,9 @@ import { message, type FormInstance } from 'ant-design-vue'
 import type { Rule } from 'ant-design-vue/es/form'
 
 import { getErrorMessage } from '@/api/http'
+import AuthFormActions from '@/components/AuthFormActions.vue'
 import UserAuthShell from '@/components/UserAuthShell.vue'
+import { userAccountRules, userPasswordRules } from '@/config/validation'
 import { useUserStore } from '@/stores/user'
 import type { UserRegisterRequest } from '@/types/user'
 
@@ -28,15 +30,11 @@ const validateConfirmPassword = async (_rule: Rule, value: string) => {
 }
 
 const rules: Record<keyof UserRegisterRequest, Rule[]> = {
-  userAccount: [
-    { required: true, message: '请输入账号', trigger: 'blur' },
-    { min: 4, message: '账号至少需要 4 个字符', trigger: 'blur' },
+  userAccount: userAccountRules,
+  userPassword: userPasswordRules,
+  checkPassword: [
+    { required: true, validator: validateConfirmPassword, trigger: ['blur', 'change'] },
   ],
-  userPassword: [
-    { required: true, message: '请输入密码', trigger: 'blur' },
-    { min: 8, message: '密码至少需要 8 个字符', trigger: 'blur' },
-  ],
-  checkPassword: [{ required: true, validator: validateConfirmPassword, trigger: ['blur', 'change'] }],
 }
 
 const handleSubmit = async () => {
@@ -55,7 +53,11 @@ const handleSubmit = async () => {
 </script>
 
 <template>
-  <UserAuthShell eyebrow="CREATE ACCOUNT" title="创建平台账号" description="注册后即可保存应用并管理生成记录。">
+  <UserAuthShell
+    eyebrow="CREATE ACCOUNT"
+    title="创建平台账号"
+    description="注册后即可保存应用并管理生成记录。"
+  >
     <a-form
       ref="formRef"
       :model="form"
@@ -65,7 +67,11 @@ const handleSubmit = async () => {
       @finish="handleSubmit"
     >
       <a-form-item label="账号" name="userAccount">
-        <a-input v-model:value="form.userAccount" autocomplete="username" placeholder="至少 4 个字符">
+        <a-input
+          v-model:value="form.userAccount"
+          autocomplete="username"
+          placeholder="至少 4 个字符"
+        >
           <template #prefix><UserOutlined /></template>
         </a-input>
       </a-form-item>
@@ -90,14 +96,13 @@ const handleSubmit = async () => {
         </a-input-password>
       </a-form-item>
 
-      <div class="form-meta">
-        <span>注册即表示你同意平台使用规范</span>
-        <RouterLink to="/user/login">已有账号？去登录</RouterLink>
-      </div>
-
-      <a-button class="submit-button" type="primary" html-type="submit" :loading="submitting" block>
-        注册
-      </a-button>
+      <AuthFormActions
+        hint="注册即表示你同意平台使用规范"
+        link-text="已有账号？去登录"
+        link-to="/user/login"
+        submit-text="注册"
+        :loading="submitting"
+      />
     </a-form>
   </UserAuthShell>
 </template>
@@ -106,29 +111,5 @@ const handleSubmit = async () => {
 :deep(.ant-input-affix-wrapper) {
   min-height: 48px;
   border-radius: 10px;
-}
-
-.form-meta {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-  justify-content: space-between;
-  margin: 4px 0 24px;
-  color: #94a3b8;
-  font-size: 13px;
-}
-
-.submit-button {
-  height: 48px;
-  font-weight: 600;
-  border-radius: 10px;
-  box-shadow: 0 10px 24px rgba(22, 119, 255, 0.2);
-}
-
-@media (max-width: 576px) {
-  .form-meta {
-    flex-direction: column;
-    align-items: flex-start;
-  }
 }
 </style>

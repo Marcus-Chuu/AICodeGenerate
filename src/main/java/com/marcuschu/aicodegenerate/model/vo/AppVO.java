@@ -31,6 +31,11 @@ public class AppVO implements Serializable {
 
     private Long userId;
 
+    /**
+     * 应用创建者脱敏信息
+     */
+    private UserVO user;
+
     private LocalDateTime editTime;
 
     private LocalDateTime createTime;

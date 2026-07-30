@@ -1,13 +1,15 @@
 package com.marcuschu.aicodegenerate.deploy;
 
+import com.marcuschu.aicodegenerate.constant.AppConstant;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.concurrent.TimeUnit;
 
 @Service
 public class ServeDeployService {
 
-    private static final String CODE_BASE_DIR = "/tmp/deploy";
     private static final int SERVE_PORT = 3000;
     private static Process serveProcess;
 
@@ -17,11 +19,26 @@ public class ServeDeployService {
     public void startServeService() {
         try {
             if (serveProcess == null || !serveProcess.isAlive()) {
-                ProcessBuilder pb = new ProcessBuilder(
-                        "npx", "serve", CODE_BASE_DIR, "-p", String.valueOf(SERVE_PORT)
-                );
-                pb.redirectErrorStream(true);
-                serveProcess = pb.start();
+                Path deployRootPath = Path.of(AppConstant.CODE_DEPLOY_ROOT_DIR);
+                Files.createDirectories(deployRootPath);
+
+                boolean isWindows = System.getProperty("os.name")
+                        .toLowerCase()
+                        .contains("win");
+                ProcessBuilder processBuilder;
+                if (isWindows) {
+                    processBuilder = new ProcessBuilder(
+                            "cmd.exe", "/c", "npx", "--yes", "serve",
+                            deployRootPath.toString(), "-l", String.valueOf(SERVE_PORT)
+                    );
+                } else {
+                    processBuilder = new ProcessBuilder(
+                            "npx", "--yes", "serve",
+                            deployRootPath.toString(), "-l", String.valueOf(SERVE_PORT)
+                    );
+                }
+                processBuilder.inheritIO();
+                serveProcess = processBuilder.start();
                 System.out.println("Serve service started on port " + SERVE_PORT);
             }
         } catch (Exception e) {

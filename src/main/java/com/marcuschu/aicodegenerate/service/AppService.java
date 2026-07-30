@@ -39,6 +39,11 @@ public interface AppService extends IService<App> {
      */
     Page<AppVO> getAppVOPage(Page<App> appPage);
 
+    /**
+     * 删除应用并清理该应用的全部对话历史。
+     */
+    boolean removeAppById(Long appId);
+
 
     /**
      * 对话生成应用

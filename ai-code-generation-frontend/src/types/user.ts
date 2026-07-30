@@ -1,7 +1,8 @@
 export type UserRole = 'user' | 'admin' | 'ban'
+export type UserId = string | number
 
 export interface LoginUserVO {
-  id: number
+  id: UserId
   userAccount: string
   userName?: string
   userAvatar?: string
@@ -12,7 +13,7 @@ export interface LoginUserVO {
 }
 
 export interface UserVO {
-  id: number
+  id: UserId
   userAccount: string
   userName?: string
   userAvatar?: string
@@ -33,7 +34,7 @@ export interface UserRegisterRequest extends UserLoginRequest {
 export interface UserQueryRequest {
   pageNum: number
   pageSize: number
-  id?: number
+  id?: UserId
   userName?: string
   userAccount?: string
   userProfile?: string
@@ -51,17 +52,9 @@ export interface UserAddRequest {
 }
 
 export interface UserUpdateRequest {
-  id: number
+  id: UserId
   userName?: string
   userAvatar?: string
   userProfile?: string
   userRole: UserRole
-}
-
-export interface PageResult<T> {
-  records: T[]
-  pageNumber?: number
-  pageSize?: number
-  totalRow: number
-  totalPage?: number
 }

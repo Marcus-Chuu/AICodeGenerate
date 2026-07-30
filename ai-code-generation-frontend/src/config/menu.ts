@@ -22,4 +22,16 @@ export const globalMenuItems: GlobalMenuItem[] = [
     path: '/admin/users',
     requiresAdmin: true,
   },
+  {
+    key: 'app-manage',
+    label: '应用管理',
+    path: '/admin/apps',
+    requiresAdmin: true,
+  },
+  {
+    key: 'chat-history-manage',
+    label: '对话管理',
+    path: '/admin/chat-histories',
+    requiresAdmin: true,
+  },
 ]

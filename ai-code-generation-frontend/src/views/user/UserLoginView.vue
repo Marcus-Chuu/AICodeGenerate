@@ -6,7 +6,9 @@ import { message, type FormInstance } from 'ant-design-vue'
 import type { Rule } from 'ant-design-vue/es/form'
 
 import { getErrorMessage } from '@/api/http'
+import AuthFormActions from '@/components/AuthFormActions.vue'
 import UserAuthShell from '@/components/UserAuthShell.vue'
+import { userAccountRules, userPasswordRules } from '@/config/validation'
 import { useUserStore } from '@/stores/user'
 import type { UserLoginRequest } from '@/types/user'
 
@@ -22,14 +24,8 @@ const form = reactive<UserLoginRequest>({
 })
 
 const rules: Record<keyof UserLoginRequest, Rule[]> = {
-  userAccount: [
-    { required: true, message: '请输入账号', trigger: 'blur' },
-    { min: 4, message: '账号至少需要 4 个字符', trigger: 'blur' },
-  ],
-  userPassword: [
-    { required: true, message: '请输入密码', trigger: 'blur' },
-    { min: 8, message: '密码至少需要 8 个字符', trigger: 'blur' },
-  ],
+  userAccount: userAccountRules,
+  userPassword: userPasswordRules,
 }
 
 const handleSubmit = async () => {
@@ -50,7 +46,11 @@ const handleSubmit = async () => {
 </script>
 
 <template>
-  <UserAuthShell eyebrow="WELCOME BACK" title="登录你的账号" description="继续创建和管理你的 AI 应用。">
+  <UserAuthShell
+    eyebrow="WELCOME BACK"
+    title="登录你的账号"
+    description="继续创建和管理你的 AI 应用。"
+  >
     <a-form
       ref="formRef"
       :model="form"
@@ -75,14 +75,13 @@ const handleSubmit = async () => {
         </a-input-password>
       </a-form-item>
 
-      <div class="form-meta">
-        <span>使用平台账号安全登录</span>
-        <RouterLink to="/user/register">还没有账号？去注册</RouterLink>
-      </div>
-
-      <a-button class="submit-button" type="primary" html-type="submit" :loading="submitting" block>
-        登录
-      </a-button>
+      <AuthFormActions
+        hint="使用平台账号安全登录"
+        link-text="还没有账号？去注册"
+        link-to="/user/register"
+        submit-text="登录"
+        :loading="submitting"
+      />
     </a-form>
   </UserAuthShell>
 </template>
@@ -91,29 +90,5 @@ const handleSubmit = async () => {
 :deep(.ant-input-affix-wrapper) {
   min-height: 48px;
   border-radius: 10px;
-}
-
-.form-meta {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-  justify-content: space-between;
-  margin: 4px 0 24px;
-  color: #94a3b8;
-  font-size: 13px;
-}
-
-.submit-button {
-  height: 48px;
-  font-weight: 600;
-  border-radius: 10px;
-  box-shadow: 0 10px 24px rgba(22, 119, 255, 0.2);
-}
-
-@media (max-width: 576px) {
-  .form-meta {
-    flex-direction: column;
-    align-items: flex-start;
-  }
 }
 </style>

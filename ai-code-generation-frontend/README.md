@@ -29,6 +29,18 @@ See [Vite Configuration Reference](https://vite.dev/config/).
 npm install
 ```
 
+### Environment Variables
+
+Copy `.env.example` when creating a local environment file. The generated application preview
+address is configured independently from the API address:
+
+```sh
+VITE_APP_PREVIEW_BASE_URL=http://localhost:8123/api/static
+```
+
+The backend deployment address is configured through the `APP_DEPLOY_BASE_URL` environment
+variable. Its local default is `http://localhost/api/static`.
+
 ### Compile and Hot-Reload for Development
 
 ```sh

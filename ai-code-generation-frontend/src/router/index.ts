@@ -34,6 +34,30 @@ const router = createRouter({
       component: () => import('@/views/admin/UserManageView.vue'),
       meta: { requiresAuth: true, requiresAdmin: true },
     },
+    {
+      path: '/admin/apps',
+      name: 'admin-app-manage',
+      component: () => import('@/views/admin/AppManageView.vue'),
+      meta: { requiresAuth: true, requiresAdmin: true },
+    },
+    {
+      path: '/admin/chat-histories',
+      name: 'admin-chat-history-manage',
+      component: () => import('@/views/admin/ChatHistoryManageView.vue'),
+      meta: { requiresAuth: true, requiresAdmin: true },
+    },
+    {
+      path: '/app/chat/:id',
+      name: 'app-chat',
+      component: () => import('@/views/app/AppChatView.vue'),
+      meta: { requiresAuth: true, immersive: true },
+    },
+    {
+      path: '/app/edit/:id',
+      name: 'app-edit',
+      component: () => import('@/views/app/AppEditView.vue'),
+      meta: { requiresAuth: true },
+    },
   ],
 })
 

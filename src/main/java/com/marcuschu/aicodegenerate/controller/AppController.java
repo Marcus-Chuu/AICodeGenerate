@@ -65,7 +65,7 @@ public class AppController {
         app.setAppName(DEFAULT_APP_NAME);
         app.setPriority(0);
         app.setUserId(loginUser.getId());
-        app.setCodeGenType(CodeGenTypeEnum.MULTI_FILE.getValue());
+        app.setCodeGenType(CodeGenTypeEnum.VUE_PROJECT.getValue());
         appService.validApp(app, true);
         boolean result = appService.save(app);
         ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR);
@@ -108,7 +108,7 @@ public class AppController {
         User loginUser = userService.getLoginUser(request);
         App oldApp = getExistingApp(deleteRequest.getId());
         checkOwner(oldApp, loginUser);
-        boolean result = appService.removeById(deleteRequest.getId());
+        boolean result = appService.removeAppById(deleteRequest.getId());
         ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR);
         return ResultUtils.success(true);
     }
@@ -173,7 +173,7 @@ public class AppController {
         ThrowUtils.throwIf(deleteRequest == null || deleteRequest.getId() == null
                 || deleteRequest.getId() <= 0, ErrorCode.PARAMS_ERROR);
         getExistingApp(deleteRequest.getId());
-        boolean result = appService.removeById(deleteRequest.getId());
+        boolean result = appService.removeAppById(deleteRequest.getId());
         ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR);
         return ResultUtils.success(true);
     }

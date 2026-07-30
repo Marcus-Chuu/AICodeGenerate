@@ -1,13 +1,17 @@
 <script setup lang="ts">
-import { RouterView } from 'vue-router'
+import { computed } from 'vue'
+import { RouterView, useRoute } from 'vue-router'
 
 import GlobalFooter from '@/components/GlobalFooter.vue'
 import GlobalHeader from '@/components/GlobalHeader.vue'
+
+const route = useRoute()
+const immersive = computed(() => Boolean(route.meta.immersive))
 </script>
 
 <template>
   <a-layout class="basic-layout">
-    <GlobalHeader />
+    <GlobalHeader v-if="!immersive" />
 
     <a-layout-content class="basic-layout__content">
       <div class="basic-layout__content-inner">
@@ -15,7 +19,7 @@ import GlobalHeader from '@/components/GlobalHeader.vue'
       </div>
     </a-layout-content>
 
-    <GlobalFooter />
+    <GlobalFooter v-if="!immersive" />
   </a-layout>
 </template>
 

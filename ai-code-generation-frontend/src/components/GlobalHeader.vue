@@ -3,7 +3,9 @@ import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import {
   DownOutlined,
+  AppstoreOutlined,
   LogoutOutlined,
+  MessageOutlined,
   TeamOutlined,
   UserOutlined,
 } from '@ant-design/icons-vue'
@@ -57,6 +59,16 @@ const handleUserMenuClick: MenuProps['onClick'] = async ({ key }) => {
     return
   }
 
+  if (key === 'admin-apps') {
+    await router.push('/admin/apps')
+    return
+  }
+
+  if (key === 'admin-chat-histories') {
+    await router.push('/admin/chat-histories')
+    return
+  }
+
   if (key === 'logout') {
     try {
       await userStore.logout()
@@ -99,6 +111,14 @@ const handleUserMenuClick: MenuProps['onClick'] = async ({ key }) => {
             <a-menu-item v-if="userStore.isAdmin" key="admin">
               <TeamOutlined />
               用户管理
+            </a-menu-item>
+            <a-menu-item v-if="userStore.isAdmin" key="admin-apps">
+              <AppstoreOutlined />
+              应用管理
+            </a-menu-item>
+            <a-menu-item v-if="userStore.isAdmin" key="admin-chat-histories">
+              <MessageOutlined />
+              对话管理
             </a-menu-item>
             <a-menu-divider v-if="userStore.isAdmin" />
             <a-menu-item key="logout">
